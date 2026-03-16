@@ -1,22 +1,22 @@
 #![allow(dead_code)]
 
 use async_trait::async_trait;
-use codex_codex::BeforeToolUsePatch;
-use codex_codex::ChatEvent;
-use codex_codex::ContentBlock;
-use codex_codex::FinishReason;
-use codex_codex::HookKind;
-use codex_codex::HookOutcome;
-use codex_codex::ModelInfo;
-use codex_codex::Plugin;
-use codex_codex::PluginDescriptor;
-use codex_codex::ProviderCapability;
-use codex_codex::ToolDescriptor;
-use codex_codex::ToolHandler;
-use codex_codex::ToolInput;
-use codex_codex::ToolOutput;
-use codex_codex::ports::model::ChatEventStream;
-use codex_codex::ports::model::ModelProvider;
+use stateless_codex::BeforeToolUsePatch;
+use stateless_codex::ChatEvent;
+use stateless_codex::ContentBlock;
+use stateless_codex::FinishReason;
+use stateless_codex::HookKind;
+use stateless_codex::HookOutcome;
+use stateless_codex::ModelInfo;
+use stateless_codex::Plugin;
+use stateless_codex::PluginDescriptor;
+use stateless_codex::ProviderCapability;
+use stateless_codex::ToolDescriptor;
+use stateless_codex::ToolHandler;
+use stateless_codex::ToolInput;
+use stateless_codex::ToolOutput;
+use stateless_codex::ports::model::ChatEventStream;
+use stateless_codex::ports::model::ModelProvider;
 use futures::stream;
 use serde_json::Value;
 use std::collections::BTreeSet;
@@ -30,8 +30,8 @@ pub struct TestProvider {
     provider_id: String,
     models: Vec<ModelInfo>,
     responses:
-        Arc<Mutex<VecDeque<Vec<Result<ChatEvent, codex_codex::domain::model::ProviderError>>>>>,
-    requests: Arc<Mutex<Vec<codex_codex::ChatRequest>>>,
+        Arc<Mutex<VecDeque<Vec<Result<ChatEvent, stateless_codex::domain::model::ProviderError>>>>>,
+    requests: Arc<Mutex<Vec<stateless_codex::ChatRequest>>>,
 }
 
 impl TestProvider {
@@ -39,7 +39,7 @@ impl TestProvider {
         provider_id: impl Into<String>,
         model_id: impl Into<String>,
         capabilities: impl IntoIterator<Item = ProviderCapability>,
-        responses: Vec<Vec<Result<ChatEvent, codex_codex::domain::model::ProviderError>>>,
+        responses: Vec<Vec<Result<ChatEvent, stateless_codex::domain::model::ProviderError>>>,
     ) -> Self {
         Self {
             provider_id: provider_id.into(),
@@ -67,9 +67,9 @@ impl ModelProvider for TestProvider {
 
     async fn chat(
         &self,
-        request: codex_codex::ChatRequest,
+        request: stateless_codex::ChatRequest,
         _cancel: CancellationToken,
-    ) -> Result<ChatEventStream, codex_codex::domain::model::ProviderError> {
+    ) -> Result<ChatEventStream, stateless_codex::domain::model::ProviderError> {
         self.requests.lock().await.push(request);
         let events = self.responses.lock().await.pop_front().unwrap_or_else(|| {
             vec![Ok(ChatEvent::Done {
@@ -120,7 +120,7 @@ impl ToolHandler for RecordingTool {
         &self,
         input: ToolInput,
         _cancel: CancellationToken,
-    ) -> Result<ToolOutput, codex_codex::AgentError> {
+    ) -> Result<ToolOutput, stateless_codex::AgentError> {
         self.calls.lock().await.push(input.arguments.clone());
         Ok(ToolOutput {
             content: format!("tool:{}", input.arguments),
@@ -157,8 +157,8 @@ impl Plugin for PatchArgsPlugin {
 
     async fn on_before_tool_use(
         &self,
-        _payload: codex_codex::domain::hook::BeforeToolUsePayload,
-    ) -> Result<HookOutcome<BeforeToolUsePatch>, codex_codex::AgentError> {
+        _payload: stateless_codex::domain::hook::BeforeToolUsePayload,
+    ) -> Result<HookOutcome<BeforeToolUsePatch>, stateless_codex::AgentError> {
         Ok(HookOutcome::ContinueWith(BeforeToolUsePatch {
             arguments: self.replacement.clone(),
         }))

@@ -1,11 +1,11 @@
 mod common;
 
-use codex_codex::AgentBuilder;
-use codex_codex::AgentConfig;
-use codex_codex::SessionStorage;
-use codex_codex::domain::ledger::SESSION_PROFILE_KEY;
-use codex_codex::domain::ledger::SessionEventPayload;
-use codex_codex::support::in_memory::InMemorySessionStorage;
+use stateless_codex::AgentBuilder;
+use stateless_codex::AgentConfig;
+use stateless_codex::SessionStorage;
+use stateless_codex::domain::ledger::SESSION_PROFILE_KEY;
+use stateless_codex::domain::ledger::SessionEventPayload;
+use stateless_codex::support::in_memory::InMemorySessionStorage;
 use common::TestProvider;
 
 fn base_config() -> AgentConfig {

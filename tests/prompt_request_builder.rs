@@ -1,18 +1,18 @@
-use codex_codex::AgentConfig;
-use codex_codex::ContentBlock;
-use codex_codex::RequestContext;
-use codex_codex::ResolvedSessionConfig;
-use codex_codex::SessionPinnedConfig;
-use codex_codex::SkillDefinition;
-use codex_codex::application::prompt_builder::PromptBuilder;
-use codex_codex::application::request_builder::ChatRequestBuilder;
-use codex_codex::application::request_builder::RequestBuildOptions;
-use codex_codex::domain::config::SessionRuntimePolicy;
-use codex_codex::domain::content::Message;
-use codex_codex::domain::error::AgentErrorCode;
-use codex_codex::domain::model::ModelInfo;
-use codex_codex::domain::plugin::PluginDescriptor;
-use codex_codex::domain::tool::ToolDescriptor;
+use stateless_codex::AgentConfig;
+use stateless_codex::ContentBlock;
+use stateless_codex::RequestContext;
+use stateless_codex::ResolvedSessionConfig;
+use stateless_codex::SessionPinnedConfig;
+use stateless_codex::SkillDefinition;
+use stateless_codex::application::prompt_builder::PromptBuilder;
+use stateless_codex::application::request_builder::ChatRequestBuilder;
+use stateless_codex::application::request_builder::RequestBuildOptions;
+use stateless_codex::domain::config::SessionRuntimePolicy;
+use stateless_codex::domain::content::Message;
+use stateless_codex::domain::error::AgentErrorCode;
+use stateless_codex::domain::model::ModelInfo;
+use stateless_codex::domain::plugin::PluginDescriptor;
+use stateless_codex::domain::tool::ToolDescriptor;
 use std::collections::BTreeSet;
 use std::collections::HashMap;
 
@@ -97,7 +97,7 @@ fn skill_list_only_contains_allow_implicit_invocation() {
 #[test]
 fn tool_definitions_only_exist_in_request_tools_and_file_content_stays_text_only() {
     let request = ChatRequestBuilder::build(
-        &codex_codex::application::prompt_builder::RenderedPrompt {
+        &stateless_codex::application::prompt_builder::RenderedPrompt {
             system_prompt: "base prompt".to_string(),
         },
         &request_context_with(ContentBlock::FileContent {
@@ -116,7 +116,7 @@ fn tool_definitions_only_exist_in_request_tools_and_file_content_stays_text_only
             model_id: "gpt-test".to_string(),
             display_name: "Test".to_string(),
             context_window: 32_000,
-            capabilities: [codex_codex::ProviderCapability::ToolUse]
+            capabilities: [stateless_codex::ProviderCapability::ToolUse]
                 .into_iter()
                 .collect::<BTreeSet<_>>(),
         },
@@ -131,7 +131,7 @@ fn tool_definitions_only_exist_in_request_tools_and_file_content_stays_text_only
 #[test]
 fn image_requires_vision_capability() {
     let error = ChatRequestBuilder::build(
-        &codex_codex::application::prompt_builder::RenderedPrompt {
+        &stateless_codex::application::prompt_builder::RenderedPrompt {
             system_prompt: "base prompt".to_string(),
         },
         &request_context_with(ContentBlock::Image {

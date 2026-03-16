@@ -78,7 +78,7 @@ session_handle.send_message(content)
 ## Usage
 
 ```rust
-use codex_codex::api::{Agent, AgentBuilder};
+use stateless_codex::api::{Agent, AgentBuilder};
 
 // Build an agent with a model provider, tools, and optional plugins
 let agent = AgentBuilder::new(config)

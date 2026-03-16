@@ -1,14 +1,14 @@
 mod common;
 
-use codex_codex::AgentBuilder;
-use codex_codex::AgentConfig;
-use codex_codex::ChatEvent;
-use codex_codex::FinishReason;
-use codex_codex::MessageStatus;
-use codex_codex::SessionStorage;
-use codex_codex::domain::event::AgentEvent;
-use codex_codex::domain::ledger::SessionEventPayload;
-use codex_codex::support::in_memory::InMemorySessionStorage;
+use stateless_codex::AgentBuilder;
+use stateless_codex::AgentConfig;
+use stateless_codex::ChatEvent;
+use stateless_codex::FinishReason;
+use stateless_codex::MessageStatus;
+use stateless_codex::SessionStorage;
+use stateless_codex::domain::event::AgentEvent;
+use stateless_codex::domain::ledger::SessionEventPayload;
+use stateless_codex::support::in_memory::InMemorySessionStorage;
 use common::PatchArgsPlugin;
 use common::RecordingTool;
 use common::TestProvider;
@@ -29,8 +29,8 @@ async fn tool_call_arguments_use_effective_arguments_and_events_are_sequenced() 
         "provider",
         "gpt-test",
         [
-            codex_codex::ProviderCapability::ToolUse,
-            codex_codex::ProviderCapability::Streaming,
+            stateless_codex::ProviderCapability::ToolUse,
+            stateless_codex::ProviderCapability::Streaming,
         ],
         vec![
             vec![
@@ -94,7 +94,7 @@ async fn tool_call_arguments_use_effective_arguments_and_events_are_sequenced() 
         })
         .expect("tool start event should be emitted");
     assert_eq!(tool_start, serde_json::json!({ "value": "patched" }));
-    assert_eq!(outcome, codex_codex::TurnOutcome::Completed);
+    assert_eq!(outcome, stateless_codex::TurnOutcome::Completed);
 
     let tool_calls = tool_probe.calls().await;
     assert_eq!(tool_calls, vec![serde_json::json!({ "value": "patched" })]);

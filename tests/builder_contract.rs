@@ -1,9 +1,9 @@
 mod common;
 
-use codex_codex::AgentBuilder;
-use codex_codex::AgentConfig;
-use codex_codex::AgentErrorCode;
-use codex_codex::SkillDefinition;
+use stateless_codex::AgentBuilder;
+use stateless_codex::AgentConfig;
+use stateless_codex::AgentErrorCode;
+use stateless_codex::SkillDefinition;
 use common::RecordingTool;
 use common::TestProvider;
 

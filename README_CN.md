@@ -78,7 +78,7 @@ session_handle.send_message(content)
 ## 使用示例
 
 ```rust
-use codex_codex::api::{Agent, AgentBuilder};
+use stateless_codex::api::{Agent, AgentBuilder};
 
 // 构建 Agent：注册模型提供者、工具和可选插件
 let agent = AgentBuilder::new(config)
