@@ -134,6 +134,10 @@ cargo +nightly fmt
 cargo clippy -- -D warnings
 ```
 
+## 致谢
+
+本项目基于 [OpenAI Codex CLI](https://github.com/openai/codex) 的代码。架构和代码源自 Codex 项目，并使用 Rust 以六边形架构方式重新实现。
+
 ## 许可证
 
 详见 [LICENSE](LICENSE)。

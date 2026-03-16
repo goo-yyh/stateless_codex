@@ -134,6 +134,10 @@ cargo +nightly fmt
 cargo clippy -- -D warnings
 ```
 
+## Acknowledgements
+
+This project is based on [OpenAI Codex CLI](https://github.com/openai/codex). The architecture and code are derived from the Codex project and re-implemented in Rust with a hexagonal architecture approach.
+
 ## License
 
 See [LICENSE](LICENSE) for details.
